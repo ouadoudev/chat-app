@@ -1,3 +1,43 @@
 <%- include('layouts/header.ejs') %>
-<h2 class="mb-4">Hii, <%= user.name %></h2>
+<h2 class="mb-4">Hi, <%= user.name %></h2>
+<div class="row">
+    <div class="col-md-3">
+        <ul class="list-group">
+            <% if(users.length > 0) { %>
+                <% users.forEach(function(user) { %>
+                    <li class="list-group-item list-group-item-dark cursor-pointer user-list">
+                        <img src="http://127.0.0.1:3000/<%= user.image %>" alt="" width="100px" height="100px">
+                        <%= user.name %>
+                    </li>
+                <% }); %>
+            <% } else { %>
+                <li class="list-group-item list-group-item-dark">No users found</li>
+            <% } %>
+        </ul>
+    </div>
+    <div class="col-md-9">
+        <h3 class="start-head"> Click to Start the Chat </h3>
+        <div class="chat-section">
+            <div id="chat-container">
+            </div>
+            <form action="" id="chat-form">
+                <input type="text" name="message" placeholder="Enter Message" id="message" required class="border">
+                <input type="submit" value="Send Message" class="btn btn-primary">
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    var sender_id = '<%= user._id %>';
+    var socket = io('/user-namespace', {
+        auth: {
+            token: '<%= user._id %>'
+        }
+    });
+
+    $(document).ready(function() {
+        $('.start-head').hide();
+        $('.chat-section').show();
+    });
+</script>
 <%- include('layouts/footer.ejs') %>
